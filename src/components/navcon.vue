@@ -29,7 +29,7 @@ export default {
   },
   // 创建完毕状态(里面是操作)
   created() {
-    this.user = JSON.parse(localStorage.getItem('userdata'))
+    //this.user = JSON.parse(localStorage.getItem('userdata'))
   },
   methods: {
     // 退出登录

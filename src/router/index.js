@@ -8,48 +8,6 @@ import index from '@/views/index';
 /**
  * 基础菜单
  */
-// 商品管理
-import Goods from '@/views/goods/Goods';
-// 机器信息管理
-import Machine from '@/views/machine/Machine';
-// 货道信息管理
-import MachineAisle from '@/views/machine/MachineAisle';
-/**
- * 订单管理
- */
-// 交易订单
-import Order from '@/views/pay/Order';
-/**
- * 系统管理
- */
-// 用户管理
-import user from '@/views/system/user';
-// 菜单管理
-import Module from '@/views/system/Module';
-// 角色管理
-import Role from '@/views/system/Role';
-// 公司管理
-import Dept from '@/views/system/Dept';
-// 系统环境变量
-import Variable from '@/views/system/Variable';
-// 权限管理
-import Permission from '@/views/system/Permission';
-/**
- * 支付管理
- */
-// 支付配置信息
-import MachineConfig from '@/views/machine/MachineConfig';
-// 支付配置
-import Config from '@/views/pay/Config';
-/**
- * 数据监控
- */
-// 监控查询
-import druidLogin from '@/views/druid/login';
-
-// 图表界面
-import statistics from '@/views/charts/statistics';
-
 import fileUpd from '@/views/modelUpd/fileUpd';
 
 // 启用路由
@@ -86,14 +44,7 @@ export default new Router({
                 meta: {
                     requireAuth: true
                 }
-            }, {
-            path: '/machine/Machine',
-            name: '机器信息管理',
-            component: Machine,
-            meta: {
-                requireAuth: true
             }
-        }
         // , {
         //     path: '/machine/MachineAisle',
         //     name: '货道信息管理',
