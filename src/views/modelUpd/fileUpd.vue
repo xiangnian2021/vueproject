@@ -1,6 +1,8 @@
 <template>
   <div class="login-wrap">
-     <el-upload style="display: -webkit-inline-box;"
+           <el-row :gutter="20">
+            <el-col :span="8">
+              <el-upload style="display: -webkit-inline-box;"
                       class="upload-demo"
                       ref="upload"
                       action=""
@@ -11,13 +13,14 @@
                       :on-success = 'handleSuccess'
                        accept=".csv,.xls,.xlsx"
                       name="file" :limit=1
-                      icon="el-icon-upload"
-                      >
-           <el-button slot="trigger"  type="primary" style="margin:5px 0px 0px 20px;">选取文件</el-button>
-           <el-button style="margin-left: 10px;" type="success" @click="submitUpload">文件上传</el-button>
-           <div slot="tip" class="el-upload__tip" style="margin-left: 10px;margin-top:15px">只能上传xls/xlsx/csv文件</div>
-           <el-button style="margin-left: 10px;" type="success" @click="btnDownLoad">下载</el-button>
-       </el-upload>
+                      icon="el-icon-upload">
+              <el-button slot="trigger"   type="primary" plain style="margin:5px 0px 0px 20px;">选取文件</el-button>
+              <el-button style="margin-left: 10px;"  type="primary" plain @click="submitUpload">文件上传</el-button>
+              <span slot="tip" class="el-upload__tip" style="margin-left: 10px;margin-top:18px">只能上传xls/xlsx/csv文件</span>
+            </el-upload>
+            </el-col>
+            <el-col :span="16"><el-button  type="primary" plain @click="btnDownLoad">下载</el-button></el-col>
+          </el-row>
   </div>
 </template>
 <script type="text/ecmascript-6">
