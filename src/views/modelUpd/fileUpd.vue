@@ -52,6 +52,7 @@ export default {
                 fd.append('file', file)
                 fileUpd(fd).then(res=>{
                    if (res.status==200) { 
+                     this.path = res.path
                       this.$message({
                             type: 'success',
                             message: res.data.msg
@@ -94,8 +95,9 @@ export default {
           });
         }
     },
-    btnDownLoad(){
-        exportDownload().then(res=>{
+    btnDownLoad(path){
+      let params = {path:this.path}
+        exportDownload(params).then(res=>{
           if(res.status==200){
             const link = document.createElement('a');
             let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});

@@ -12,6 +12,7 @@ export const fileUpd = (params) => { return  axios.post('http://127.0.0.1:8000/f
  export const exportDownload = (params) => { return axios.get("http://127.0.0.1:8000/frontframe/api/download/",
  {responseType: "blob"},{headers: {'Authorization':'Bearer ' +localStorage.getItem('logintoken')}}) };
 
+
 // 获取用户菜单
 export const menu = (params) => { return axios.get("/api/menu?&token=" + localStorage.getItem('logintoken')).then(res => res.data) };
 // 退出接口
