@@ -81,29 +81,29 @@ export default {
         if (valid) {
           this.logining = true
           // 测试通道，不为空直接登录
-          setTimeout(() => {
-            this.logining = false
-            this.$store.commit('login', 'true')
-            this.$router.push({ path: '/modelUpd/fileUpd' })
-          }, 1000)
+          //setTimeout(() => {
+           // this.logining = false
+           // this.$store.commit('login', 'true')
+           // this.$router.push({ path: '/modelUpd/fileUpd' })
+          //}, 1000)
           // 注释
-          // login(this.ruleForm).then(res => {
-          //   if (res.success) {
-          //     setTimeout(() => {
-          //       this.logining = false
-          //       // 缓存token
-          //       localStorage.setItem('logintoken', res.token)
-          //       // 缓存用户个人信息
-          //       localStorage.setItem('userdata', JSON.stringify(res.data))
-          //       this.$store.commit('login', 'true')
-          //       this.$router.push({ path: '/goods/Goods' })
-          //     }, 1000)
-          //   } else {
-          //     this.$message.error(res.msg)
-          //     this.logining = false
-          //     return false
-          //   }
-          // })
+           login(this.ruleForm).then(res => {
+             if (res.success) {
+               setTimeout(() => {
+                 this.logining = false
+                 // 缓存token
+                 localStorage.setItem('logintoken', res.token)
+                 // 缓存用户个人信息
+                 localStorage.setItem('userdata', JSON.stringify(res.data))
+                 this.$store.commit('login', 'true')
+                 this.$router.push({ path: '/modelUpd/fileUpd' })
+               }, 1000)
+             } else {
+               this.$message.error(res.msg)
+               this.logining = false
+               return false
+             }
+           })
         } else {
           // 获取图形验证码
           this.getcode()

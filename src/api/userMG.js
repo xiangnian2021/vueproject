@@ -2,10 +2,15 @@ import axios from 'axios';
 import { loginreq, req } from './axiosFun';
 
 // 登录接口 
-export const login = (params) => { return loginreq("post", "/api/login/login", params) };
+export const login = (params) => { return loginreq("post", "http://127.0.0.1:8000/login/login", params) };
 
-export const fileUpd = (params) => { return  axios.post('/frontframe/api/upload/',
- params, {headers: {'Content-Type': 'multipart/form-data','Authorization':'Bearer' +localStorage.getItem('logintoken') }})};
+//上传
+export const fileUpd = (params) => { return  axios.post('http://127.0.0.1:8000/frontframe/api/upload/',
+ params, {headers: {'Content-Type': 'multipart/form-data','Authorization':'Bearer ' +localStorage.getItem('logintoken') }})};
+
+ //下载
+ export const download = (params) => { return loginreq("post", "http://127.0.0.1:8000/frontframe/api/download/", params) };
+
 // 获取用户菜单
 export const menu = (params) => { return axios.get("/api/menu?&token=" + localStorage.getItem('logintoken')).then(res => res.data) };
 // 退出接口
