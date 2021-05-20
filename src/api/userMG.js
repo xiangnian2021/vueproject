@@ -9,8 +9,8 @@ export const fileUpd = (params) => { return  axios.post('http://127.0.0.1:8000/f
  params, {headers: {'Content-Type': 'multipart/form-data','Authorization':'Bearer ' +localStorage.getItem('logintoken') }})};
 
  //下载
- export const exportDownload = (params) => { return axios.get("http://127.0.0.1:8000/frontframe/api/download/",
- {responseType: "blob"},{headers: {'Authorization':'Bearer ' +localStorage.getItem('logintoken')}}) };
+ export const exportDownload = (params) => { return axios.post("http://127.0.0.1:8000/frontframe/api/download/",
+ {responseType: "blob"},{headers: {'Content-Type': 'application/octet-stream','Authorization':'Bearer ' +localStorage.getItem('logintoken')}}) };
 
 
 // 获取用户菜单

@@ -100,30 +100,64 @@ export default {
     },
     btnDownLoad(path){
       let params = {path:this.path}
-        exportDownload(params).then(res=>{
-          if(res.status==200){
-            const link = document.createElement('a');
-            let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
-            let url = window.URL.createObjectURL(blob);
-            link.href = url;
-            link.download = this.insurlink_code_name + 'file.xls'; // 自定义文件名
-            link.click(); // 下载文件
-            URL.revokeObjectURL(url); // 释放内存
-          }else if (res.status==2002){
-            //跳转到登录
-            this.$store.commit('logout', 'false')
-            this.$router.push({ path: '/login' })
-            this.$message({
-              type: 'info',
-              message: "登录超时,请重新登录"
-            })
-          }else{
-            this.$message({
-              type: 'info',
-              message: res.msg
-            })
-          }
-        });
+      let logintoken = localStorage.getItem('logintoken')
+      debugger
+      console.log(localStorage.getItem('logintoken'))
+        // exportDownload(params).then(res=>{
+        //   if(res.status==200){
+        //     const link = document.createElement('a');
+        //     let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
+        //     let url = window.URL.createObjectURL(blob);
+        //     link.href = url;
+        //     debugger
+        //     link.download = this.insurlink_code_name + 'file.xls'; // 自定义文件名
+        //     link.click(); // 下载文件
+        //     URL.revokeObjectURL(url); // 释放内存
+        //   }else if (res.status==2002){
+        //     //跳转到登录
+        //     this.$store.commit('logout', 'false')
+        //     this.$router.push({ path: '/login' })
+        //     this.$message({
+        //       type: 'info',
+        //       message: "登录超时,请重新登录"
+        //     })
+        //   }else{
+        //     this.$message({
+        //       type: 'info',
+        //       message: res.msg
+
+        
+        //     })
+        //   }
+        // });
+      exportDownload(params).then(response => {
+       if (response.data.type === 'application/octet-stream') {
+        // 获取http头部的文件名信息，若无需重命名文件，将下面这行删去
+        const fileName = response.headers['content-disposition'].split('=')[1]
+        /* 兼容ie内核，360浏览器的兼容模式 */
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          const blob = new Blob([response.data], { type: 'application/zip' })
+          window.navigator.msSaveOrOpenBlob(blob, fileName)
+        } else {
+          /* 火狐谷歌的文件下载方式 */
+          const blob = new Blob([response.data], { type: 'application/zip' })
+          const url = window.URL.createObjectURL(blob)
+          const link = document.createElement('a') // 创建a标签
+          link.href = url
+          link.download = fileName // 文件重命名，若无需重命名，将该行删去
+          link.click()
+          URL.revokeObjectURL(url) // 释放内存
+        }
+        resolve(response)
+      } else {
+        const reader = new FileReader()
+        reader.onload = function(event) {
+          const msg = JSON.parse(reader.result).data
+          _this.$errorMsg(message) // 将错误信息显示出来
+        }
+        reader.readAsText(response.data)
+      }
+      }).catch(error => _this.$errorMsg(error) )
     }
   }
 }
