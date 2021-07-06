@@ -25,7 +25,7 @@
             </el-col>
             <el-col :span="5">
               <div class="marginTopBottom10">
-                <el-progress :percentage="0"  width="80"></el-progress>
+                <el-progress :percentage="percentage" ></el-progress>
               </div>
             </el-col>
           </el-row>
@@ -40,11 +40,12 @@ export default {
     return {
       //定义loading默认为false
       logining: false,
-      percentage:false
+      percentage:0
     }
   },
   // 创建完毕状态(里面是操作)
   created() {
+    this.getFileStatus()
   },
   // 里面的函数只有调用才会执行
   methods: {
@@ -163,10 +164,11 @@ export default {
     },
     getFileStatus(){
       fileStatus().then(res => {
-             if (res.result === 201) {
-              this.percentage = res.status
+              debugger
+             if (res.data.result === 201) {
+              this.percentage = res.data.status
              } else {
-                _this.$errorMsg(res.msg) // 将错误信息显示出来
+                this.$errorMsg(res.data.msg) // 将错误信息显示出来
              }
       })
     },
