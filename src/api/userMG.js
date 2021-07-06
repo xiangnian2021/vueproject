@@ -10,7 +10,10 @@ export const fileUpd = (params) => { return  axios.post('http://127.0.0.1:8000/f
 
  //下载
  export const exportDownload = (params) => { return axios.post("http://127.0.0.1:8000/frontframe/api/download/",
- {responseType: "blob"},{headers: {'Content-Type': 'application/octet-stream','Authorization':'Bearer ' +localStorage.getItem('logintoken')}}) };
+ {responseType: "blob"},{headers: {'Content-Type': 'charset=UTF-8','Authorization':'Bearer ' +localStorage.getItem('logintoken')}}) };
+
+ export const fileStatus = (params) => { return  axios.post('http://127.0.0.1:8000/api/frontframe/api/getstatus',
+ params, {headers: {'Content-Type': 'multipart/form-data','Authorization':'Bearer ' +localStorage.getItem('logintoken') }})};
 
 
 // 获取用户菜单

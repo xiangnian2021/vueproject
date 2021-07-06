@@ -80,7 +80,7 @@ export default {
 </script>
 <style>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 240px;
+  width: 220px;
   min-height: 400px;
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {

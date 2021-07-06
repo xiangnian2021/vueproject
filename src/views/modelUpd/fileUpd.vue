@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrap">
            <el-row :gutter="20">
-            <el-col :span="8">
+            <el-col :span="15">
               <el-upload style="display: -webkit-inline-box;"
                       class="upload-demo"
                       ref="upload"
@@ -16,21 +16,31 @@
                       icon="el-icon-upload">
               <el-button slot="trigger"   type="primary" plain style="margin:5px 0px 0px 20px;">选取文件</el-button>
               <el-button style="margin-left: 10px;"  type="primary" plain @click="submitUpload">文件上传</el-button>
-              <span slot="tip" class="el-upload__tip" style="margin-left: 10px;margin-top:18px">只能上传xls/xlsx/csv文件</span>
+              <span slot="tip" class="el-upload__tip" style="margin-left: 10px;margin-top:18px">只能上传csv/xls/xlsx文件</span>
             </el-upload>
             </el-col>
-            <el-col :span="16"><el-button  type="primary" plain @click="btnDownLoad">下载</el-button></el-col>
+            <el-col :span="4">
+              <el-button  type="primary" plain @click="btnReload">刷新</el-button>
+              <el-button  type="primary" plain @click="btnDownLoad">下载</el-button>
+            </el-col>
+            <el-col :span="5">
+              <div class="marginTopBottom10">
+                <el-progress :percentage="0"  width="80"></el-progress>
+              </div>
+            </el-col>
           </el-row>
   </div>
 </template>
 <script type="text/ecmascript-6">
-import { fileUpd, exportDownload } from '../../api/userMG'
+import { fileUpd, exportDownload ,fileStatus } from '../../api/userMG'
+import axios from 'axios';
 export default {
   name: 'login',
   data() {
     return {
       //定义loading默认为false
-      logining: false
+      logining: false,
+      percentage:false
     }
   },
   // 创建完毕状态(里面是操作)
@@ -56,6 +66,7 @@ export default {
                 fileUpd(fd).then(res=>{
                    if (res.status==200) { 
                      this.path = res.path
+                     this.getFileStatus()
                       this.$message({
                             type: 'success',
                             message: res.data.msg
@@ -101,35 +112,26 @@ export default {
     btnDownLoad(path){
       let params = {path:this.path}
       let logintoken = localStorage.getItem('logintoken')
-      debugger
-      console.log(localStorage.getItem('logintoken'))
-        // exportDownload(params).then(res=>{
-        //   if(res.status==200){
-        //     const link = document.createElement('a');
-        //     let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
-        //     let url = window.URL.createObjectURL(blob);
-        //     link.href = url;
-        //     debugger
-        //     link.download = this.insurlink_code_name + 'file.xls'; // 自定义文件名
-        //     link.click(); // 下载文件
-        //     URL.revokeObjectURL(url); // 释放内存
-        //   }else if (res.status==2002){
-        //     //跳转到登录
-        //     this.$store.commit('logout', 'false')
-        //     this.$router.push({ path: '/login' })
-        //     this.$message({
-        //       type: 'info',
-        //       message: "登录超时,请重新登录"
-        //     })
-        //   }else{
-        //     this.$message({
-        //       type: 'info',
-        //       message: res.msg
 
-        
-        //     })
-        //   }
-        // });
+      console.log(localStorage.getItem('logintoken'))
+
+       axios({
+          method: 'post',
+          url: 'http://127.0.0.1:8000/frontframe/api/download/',
+          responseType: 'blob',
+          headers: {'Content-Type': 'charset=UTF-8','Authorization':'Bearer ' +localStorage.getItem('logintoken')}
+        }).then((res) => {
+          if (!res) {
+            return
+          }
+          let url = window.URL.createObjectURL(res.data)
+          let link = document.createElement('a')
+          link.style.display = 'none'
+          link.href = url
+          link.setAttribute('download','file.zip')
+          document.body.appendChild(link)
+          link.click()
+        })
       exportDownload(params).then(response => {
        if (response.data.type === 'application/octet-stream') {
         // 获取http头部的文件名信息，若无需重命名文件，将下面这行删去
@@ -158,6 +160,18 @@ export default {
         reader.readAsText(response.data)
       }
       }).catch(error => _this.$errorMsg(error) )
+    },
+    getFileStatus(){
+      fileStatus().then(res => {
+             if (res.result === 201) {
+              this.percentage = res.status
+             } else {
+                _this.$errorMsg(res.msg) // 将错误信息显示出来
+             }
+      })
+    },
+    btnReload(){
+      this.getFileStatus()
     }
   }
 }
@@ -168,9 +182,10 @@ export default {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding-top: 5%;
-  padding-left: 5%;
+  padding: 5%;
   background-repeat: no-repeat;
   background-position: center right;
-  background-size: 100%;}
+  background-size: 100%;
+  }
+  .marginTopBottom10{margin:10px 0px}
 </style>
